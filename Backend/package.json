@@ -1,0 +1,39 @@
+{
+  "name": "studynotion",
+  "version": "1.0.0",
+  "description": "It is a backend for a StudyNotion project where 3 type of people can access Student, Instructor and Admin. It is my Major Project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajan153/StudyNotion.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "Node",
+    "React",
+    "Express",
+    "Css",
+    "Tailwind",
+    "TailwindCss",
+    "Mongo",
+    "Mongoose",
+    "Nodemon"
+  ],
+  "author": "Rajan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rajan153/StudyNotion/issues"
+  },
+  "homepage": "https://github.com/rajan153/StudyNotion#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "prettier": "^3.1.0"
+  }
+}
