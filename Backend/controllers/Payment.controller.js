@@ -3,7 +3,6 @@ const { instance } = require("../configs/razorpay");
 const Course = require("../models/Course.model");
 const User = require("../models/User.model");
 const mailSender = require("../utils/mailSender.utils");
-// const {courseEnrollmentEmail} = require("../mail/templates/courseEnrollmentEmail");
 require("dotenv").config();
 
 // Capture the payment and initiate the razorpay order
@@ -60,6 +59,7 @@ exports.capturePayment = async (req, res) => {
     try {
       // Initiate the payment using razorpay
       const paymentResponse = await instance.orders.create(options);
+      // return response
       return res.status(200).json({
         success: true,
         courseName: course.courseName,
@@ -68,6 +68,7 @@ exports.capturePayment = async (req, res) => {
         orderId: paymentResponse.id,
         currency: paymentResponse.currency,
         amount: paymentResponse.amount,
+        message: "You enrolled to the courses",
       });
     } catch (error) {
       console.error(error);
@@ -76,11 +77,6 @@ exports.capturePayment = async (req, res) => {
         message: "Your order could'nt initiate",
       });
     }
-    // return response
-    return res.status(200).json({
-      success: true,
-      message: "You enrolled to the courses",
-    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -96,9 +92,10 @@ exports.verifySignature = async (req, res) => {
 
   const signature = req.header["x-razorpay-signature"];
 
-  crypto.createHmac("sha256", webhookSecret);
+  const shasum = crypto.createHmac("sha256", webhookSecret);
   shasum.update(JSON.stringify(req.body));
-  const digest = shasu.digest("hex");
+  const digest = shasum.digest("hex");
+
   if (signature === digest) {
     console.log("Payment is authorized");
     const { courseId, userId } = req.body.payload.payment.entity.notes;
