@@ -1,4 +1,4 @@
-const subSection = require("../models/SubSection.model");
+const SubSection = require("../models/SubSection.model");
 const Section = require("../models/Section.model");
 const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
 
@@ -9,7 +9,7 @@ exports.createSubSection = async (req, res) => {
     // Exrect file
     const video = req.files.videoFile;
     // validation
-    if ((!sectionId, !title, !timeDuration, !description, !video)) {
+    if (!sectionId || !title || !timeDuration || !description || !video) {
       return res.status(400).json({
         success: false,
         message: "All fileds are required",
@@ -21,7 +21,7 @@ exports.createSubSection = async (req, res) => {
       process.env.FOLDER_NAME
     );
     // Create SubSection
-    const subSectionDetails = await Section.create({
+    const subSectionDetails = await SubSection.create({
       title: title,
       timeDuration: timeDuration,
       description: description,
@@ -32,7 +32,7 @@ exports.createSubSection = async (req, res) => {
       { _id: sectionId },
       { $push: { subSection: subSectionDetails._id } },
       { new: true }
-    );
+    ).populate("subSection");
     // HW:Add populate to log
     // return res
     return res.status(200).json({
@@ -48,3 +48,7 @@ exports.createSubSection = async (req, res) => {
     });
   }
 };
+
+//HW: updateSubSection
+
+//HW:deleteSubSection

@@ -1,3 +1,4 @@
+const Category = require("../models/Category.model");
 const Course = require("../models/Course.model");
 const Tag = require("../models/Tags.model");
 const User = require("../models/User.model");
@@ -7,8 +8,16 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
 exports.createCourse = async (req, res) => {
   try {
     // fetch data
-    const { courseName, courseDescription, whatYouWillLearn, price, tag } =
-      req.body;
+    let {
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      price,
+      tag,
+      category,
+      status,
+      instructions,
+    } = req.body;
     // Get thumbnail
     const thumbnail = req.files.thumbnailImage;
     // Validation
@@ -18,12 +27,16 @@ exports.createCourse = async (req, res) => {
       !whatYouWillLearn ||
       !price ||
       !tag ||
-      !thumbnail
+      !thumbnail ||
+      !category
     ) {
       return res.status(400).json({
         success: false,
         message: "All fields are required.",
       });
+    }
+    if (!status || status === undefined) {
+      status = "Draft";
     }
     // Check instructor valid or not
     const userId = req.user.id;
@@ -35,12 +48,12 @@ exports.createCourse = async (req, res) => {
         message: "Instructor details not found",
       });
     }
-    // Check given tags is valid or not
-    const tagDetails = await Tag.findById(tag);
-    if (!tagDetails) {
+    // Check given category is valid or not
+    const categoryDetails = await Category.findById(tag);
+    if (!categoryDetails) {
       return res.status(404).json({
         success: false,
-        message: "Tag details not found",
+        message: "Category details not found",
       });
     }
 
@@ -57,8 +70,10 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag: tagDetails._id,
+      tag: tag,
       thumbnail: thumbnailImage.secure_url,
+      status: status,
+      instructions: instructions,
     });
 
     // Add course in instructor course schema
@@ -73,7 +88,15 @@ exports.createCourse = async (req, res) => {
     );
 
     // Update the Tag Schema
-    // TODO: HomeWork
+    await Category.findByIdAndUpdate(
+      { _id: category },
+      {
+        $push: {
+          course: newCourse._id,
+        },
+      },
+      { new: true }
+    );
 
     // return response
     return res.status(200).json({
