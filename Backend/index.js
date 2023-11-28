@@ -19,7 +19,7 @@ const PORT = process.env.PORT || 4000;
 database.connect();
 // middleware
 app.use(express.json());
-app.use(cookieParser);
+app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp" }));
 
@@ -35,9 +35,8 @@ app.use("/api/v1/payment", paymentRoutes);
 // Default routes
 app.get("/", (req, res) => {
   return res.status(200).json({
-    success: true,
-    message: "Server is running",
-  });
+    success:true,
+  })
 });
 
 app.listen(PORT, () => {
