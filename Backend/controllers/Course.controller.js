@@ -1,34 +1,42 @@
 const Category = require("../models/Category.model");
 const Course = require("../models/Course.model");
-const Tag = require("../models/Tags.model");
+// const Tag = require("../models/Tags.model");
 const User = require("../models/User.model");
 const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
 
 // Create course Handler function
 exports.createCourse = async (req, res) => {
   try {
+    const userId = req.user.id;
     // fetch data
     let {
       courseName,
       courseDescription,
       whatYouWillLearn,
       price,
-      tag,
+      tag: _tag,
       category,
       status,
-      instructions,
+      // instructions: _instructions,
     } = req.body;
     // Get thumbnail
     const thumbnail = req.files.thumbnailImage;
+    // console.log(first)
+    const tag = _tag;
+    // Convert the tag and instructions from stringified Array to Array
+    // const tag = JSON.parse(_tag);
+    // const instructions = JSON.parse(_instructions);
+
     // Validation
     if (
       !courseName ||
       !courseDescription ||
       !whatYouWillLearn ||
+      !tag.length ||
       !price ||
-      !tag ||
       !thumbnail ||
       !category
+      // !instructions.length
     ) {
       return res.status(400).json({
         success: false,
@@ -39,8 +47,10 @@ exports.createCourse = async (req, res) => {
       status = "Draft";
     }
     // Check instructor valid or not
-    const userId = req.user.id;
-    const instructorDetails = await User.findById(userId);
+
+    const instructorDetails = await User.findById(userId, {
+      accountType: "Instructor",
+    });
 
     if (!instructorDetails) {
       return res.status(401).json({
@@ -49,7 +59,7 @@ exports.createCourse = async (req, res) => {
       });
     }
     // Check given category is valid or not
-    const categoryDetails = await Category.findById(tag);
+    const categoryDetails = await Category.findById(category);
     if (!categoryDetails) {
       return res.status(404).json({
         success: false,
@@ -70,10 +80,11 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag: tag,
+      tag,
+      category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
       status: status,
-      instructions: instructions,
+      // instructions,
     });
 
     // Add course in instructor course schema

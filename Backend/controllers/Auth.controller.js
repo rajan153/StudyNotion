@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { passwordUpdated } = require("../mails/passwordUpdateTemplate");
 const mailSender = require("../utils/mailSender.utils");
+const otpTemplate = require("../mails/emailVerificationTemplate");
 require("dotenv").config();
 
 // Send Otp
@@ -42,9 +43,10 @@ exports.sendOtp = async (req, res) => {
 
     const otpPaylaod = { email, otp };
     const otpBody = await Otp.create(otpPaylaod);
+    await mailSender(email, "One Time Password", otpTemplate(otp));
     res.status(200).json({
       success: true,
-      message: "OTP send successfully.",
+      message: `OTP send successfully. Please check your ${email} email `,
       otp,
     });
   } catch (error) {
@@ -267,6 +269,7 @@ exports.changePassword = async (req, res) => {
     try {
       const emailResponse = await mailSender(
         updatedUserDetails.email,
+        "Password updated successfully",
         passwordUpdated(
           updatedUserDetails.email,
           `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
