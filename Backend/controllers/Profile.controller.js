@@ -6,23 +6,39 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
 exports.updateProfile = async (req, res) => {
   try {
     // Get data
-    const { dateOfBirth = "", about = "", contactNumber, gender } = req.body;
+    const {
+      firstName,
+      lastName,
+      dateOfBirth = "",
+      about = "",
+      contactNumber = "",
+      gender = null,
+    } = req.body;
+
     const id = req.user.id;
     // find profile
     const userDetails = await User.findById(id);
     const profileId = userDetails.additionalDetails;
     const profileDetails = await Profile.findById(profileId);
+
+    const user = await User.findByIdAndUpdate(id, { firstName, lastName });
     // update profile
     profileDetails.dateOfBirth = dateOfBirth;
     profileDetails.about = about;
     profileDetails.gender = gender;
     profileDetails.contactNumber = contactNumber;
+    profileDetails.firstName = firstName;
+    profileDetails.lastName = lastName;
     await profileDetails.save();
+
+    const updatedUserDetails = await User.findById(id)
+      .populate("additionalDetails")
+      .exec();
     // return response
     return res.status(200).json({
       success: true,
       message: "Profile updated successfully",
-      profileDetails,
+      updatedUserDetails,
     });
   } catch (error) {
     console.error(error);
@@ -109,7 +125,7 @@ exports.updateDisplayPicture = async (req, res) => {
     );
     const updatedProfile = await User.findByIdAndUpdate(
       { _id: userId },
-      { image: image.secure_url },
+      { images: image.secure_url },
       { new: true }
     );
     return res.status(200).json({
