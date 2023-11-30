@@ -6,7 +6,7 @@ exports.createSection = async (req, res) => {
     // Data fetch
     const { sectionName, subSection, courseId } = req.body;
     // Data validation
-    if (!sectionName || !subSection) {
+    if (!sectionName || !courseId) {
       return res.status(401).json({
         success: false,
         message: "All fields are required.",
@@ -29,7 +29,7 @@ exports.createSection = async (req, res) => {
       .populate({
         path: "courseContent",
         populate: {
-          path: subSection,
+          path: "subSection",
         },
       })
       .exec();
