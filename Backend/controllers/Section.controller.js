@@ -4,9 +4,9 @@ const Course = require("../models/Course.model");
 exports.createSection = async (req, res) => {
   try {
     // Data fetch
-    const { sectionName, subSection, courseId } = req.body;
+    const { sectionName, courseId } = req.body;
     // Data validation
-    if (!sectionName || !subSection) {
+    if (!sectionName || !courseId) {
       return res.status(401).json({
         success: false,
         message: "All fields are required.",
@@ -29,7 +29,7 @@ exports.createSection = async (req, res) => {
       .populate({
         path: "courseContent",
         populate: {
-          path: subSection,
+          path: "subSection",
         },
       })
       .exec();
@@ -84,7 +84,7 @@ exports.updateSection = async (req, res) => {
 exports.deleteSection = async (req, res) => {
   try {
     // Data fetch (id)
-    const { sectionId } = req.params;
+    const { sectionId } = req.body;
 
     // find delete
     // TODO [Tesing]: any need to delete from the course schema.

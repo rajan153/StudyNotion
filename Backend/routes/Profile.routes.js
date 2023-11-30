@@ -15,7 +15,7 @@ const {
 // **************************************************************
 
 // Delete Account
-router.delete("/deleteProfile", deleteProfile);
+router.delete("/deleteProfile", auth, deleteProfile);
 router.put("/updateProfile", auth, updateProfile);
 router.get("/getAllDetails", auth, getAllDetails);
 

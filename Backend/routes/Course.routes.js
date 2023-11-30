@@ -6,6 +6,10 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  editCourse,
+  getFullCourseDetails,
+  getInstructorCourses,
+  deletedCourse,
 } = require("../controllers/Course.controller");
 
 // Category Controller import
@@ -45,24 +49,42 @@ const {
 //               Routes for (isInstructor)
 // **************************************************************
 
+// ******************************************************
+//                         Course
+// *******************************************************
 // Course created by instructor only
-router.post("/createPost", auth, isInstructor, createCourse);
+router.post("/createCourse", auth, isInstructor, createCourse);
+// Edit course
+router.post("/editCourse", auth, isInstructor, editCourse);
+// Get all created course
+router.get("/getAllCourses", getAllCourses);
+// Get instructor courses
+router.get("/getInstructorCourses", auth, isInstructor, getInstructorCourses);
+// Course details
+router.post("/getCourseDetails", getCourseDetails);
+// Deleted Course
+router.post("/deletedCourse", auth, isInstructor, deletedCourse);
+// Get full deitals of Course
+router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+
+// ******************************************************
+//                         Sections
+// *******************************************************
 // Add Section
 router.post("/createSection", auth, isInstructor, createSection);
 // Update Section
 router.post("/updateSection", auth, isInstructor, updateSection);
 // Delete Section
 router.post("/deleteSection", auth, isInstructor, deleteSection);
+// ******************************************************
+//                         Sub-Sections
+// *******************************************************
 // Create Sub-Section
 router.post("/createSubSection", auth, isInstructor, createSubSection);
 // Update Sub-Section
 router.post("/updateSubSection", auth, isInstructor, updateSubSection);
 // Delete Sub-Section
 router.post("/deleteSubSection", auth, isInstructor, deleteSubSection);
-// Get all created course
-router.get("/getAllCourses", getAllCourses);
-// Course details
-router.post("/getCourseDetails", getCourseDetails);
 
 // **************************************************************
 //              Category Routes for (isAdmin)

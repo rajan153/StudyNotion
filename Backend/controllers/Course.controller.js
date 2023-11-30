@@ -1,8 +1,12 @@
 const Category = require("../models/Category.model");
 const Course = require("../models/Course.model");
+const Section = require("../models/Section.model");
+const SubSection = require("../models/SubSection.model");
+const CourseProgress = require("../models/CourseProgress.model");
 // const Tag = require("../models/Tags.model");
 const User = require("../models/User.model");
 const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
+const { convertSecondsToDuration } = require("../utils/secToDuration.utils");
 
 // Create course Handler function
 exports.createCourse = async (req, res) => {
@@ -17,30 +21,31 @@ exports.createCourse = async (req, res) => {
       tag: _tag,
       category,
       status,
-      // instructions: _instructions,
+      instructions: _instructions,
     } = req.body;
     // Get thumbnail
     const thumbnail = req.files.thumbnailImage;
-    // console.log(first)
-    const tag = _tag;
-    // Convert the tag and instructions from stringified Array to Array
-    // const tag = JSON.parse(_tag);
-    // const instructions = JSON.parse(_instructions);
 
+    // Convert the tag and instructions from stringified Array to Array
+    const tag = JSON.parse(_tag);
+    const instructions = JSON.parse(_instructions);
+
+    console.log("tag", tag);
+    console.log("instructions", instructions);
     // Validation
     if (
       !courseName ||
       !courseDescription ||
       !whatYouWillLearn ||
-      !tag.length ||
       !price ||
+      !tag.length ||
       !thumbnail ||
-      !category
-      // !instructions.length
+      !category ||
+      !instructions.length
     ) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required.",
+        message: "All Fields are Mandatory",
       });
     }
     if (!status || status === undefined) {
@@ -84,7 +89,7 @@ exports.createCourse = async (req, res) => {
       category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
       status: status,
-      // instructions,
+      instructions,
     });
 
     // Add course in instructor course schema
@@ -171,7 +176,10 @@ exports.getCourseDetails = async (req, res) => {
       })
       .populate("category")
       .populate("ratingAndReviews")
-      .populate({ path: "courseContent", populate: { path: "subSection" } })
+      .populate({
+        path: "courseContent",
+        populate: { path: "subSection", sulect: "-videoUrl" },
+      })
       .exec();
     // Validation
     if (!courseDetails) {
@@ -180,16 +188,200 @@ exports.getCourseDetails = async (req, res) => {
         message: `could not find the course with ${courseId}`,
       });
     }
+
+    let totalDurationInSeconds = 0;
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
     // Return response
+    console.log(courseDetails.length);
     return res.status(200).json({
       success: true,
       message: "Course Details successfully fetched",
+      courseDetails,
+      totalDuration,
     });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching the course details.",
+    });
+  }
+};
+
+// Edit Course Details
+exports.editCourse = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const updates = req.body;
+    const course = await Course.findById(courseId);
+    if (!courseId) {
+      return res.status(400).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+    if (req.files) {
+      const thumbnail = req.files.thumbnailImage;
+      const thumbnailImage = await uploadImageToCloudinary(
+        thumbnail,
+        process.env.FOLDER_NAME
+      );
+      course.thumbnail = thumbnailImage.secure_url;
+    }
+    for (const key in updates) {
+      if (updates.hasOwnProperty(key)) {
+        if (key === "tag" || key === "instructions") {
+          course[key] = JSON.parse(updates[key]);
+        } else {
+          course[key] = updates[key];
+        }
+      }
+    }
+    await course.save();
+    const updatedCourse = await Course.findOne({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({ path: "courseContent", populate: { path: "subSection" } })
+      .exec();
+    return res.status(200).json({
+      success: true,
+      message: "Course update successfully",
+      data: updatedCourse,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while edit the course",
+    });
+  }
+};
+
+// Get full course details
+exports.getFullCourseDetails = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const userId = req.user.id;
+    const courseDetails = await Course.findOne({
+      _id: courseId,
+    })
+      .populate({
+        path: "instructor",
+        populate: { path: "additionalDetails" },
+      })
+      .populate("category")
+      .populate("ratingAndReviews")
+      .populate({ path: "courseContent", populate: { path: "subSection" } })
+      .exec();
+    let courseProgressCount = await CourseProgress.findOne({
+      courseID: courseId,
+      userId: userId,
+    });
+    if (!courseDetails) {
+      return res.status(400).json({
+        success: false,
+        message: "Course not found.",
+      });
+    }
+    let totalDurationInSeconds = 0;
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration);
+        totalDurationInSeconds += timeDurationInSeconds;
+      });
+    });
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
+    return res.status(200).json({
+      success: true,
+      message: "Data fetch successfully of full course.",
+      data: {
+        courseDetails,
+        totalDuration,
+        completedVideos: courseProgressCount?.completedVideos
+          ? courseProgressCount?.completedVideos
+          : [],
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while getting full course details.",
+    });
+  }
+};
+
+// Get instructor course
+exports.getInstructorCourses = async (req, res) => {
+  try {
+    const instructorId = req.user.id;
+    const instructorCourses = await Course.find({
+      instructor: instructorId,
+    }).sort({ createdAt: -1 });
+    return res.status(200).json({
+      succ: true,
+      message: "Courses fetched successfully",
+      data: instructorCourses,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while fetching instructor's course.",
+    });
+  }
+};
+
+// Deleted course
+exports.deletedCourse = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+    const studentEnrolled = course.studentEnrolled;
+    for (const studentId of studentEnrolled) {
+      await User.findByIdAndUpdate(studentId, {
+        $pull: { course: courseId },
+      });
+    }
+    const courseSection = course.courseContent;
+    for (const sectionId of courseSection) {
+      const section = await Section.findById(sectionId);
+      if (section) {
+        const subSections = section.subSection;
+        for (const subSectionId of subSections) {
+          await SubSection.findByIdAndDelete(subSectionId);
+        }
+      }
+      await Section.findByIdAndDelete(sectionId);
+    }
+    await Course.findByIdAndDelete(courseId);
+    return res.status(200).json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong while deleting the course",
     });
   }
 };
