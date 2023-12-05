@@ -206,6 +206,7 @@ function Home() {
       <h3 className="text-center text-4xl font-semibold mt-8">
         Reviews from other learners
       </h3>
+      {/* Review Slider */}
       <ReviewSlider />
     </div>
   );
