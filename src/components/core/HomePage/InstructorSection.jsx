@@ -17,7 +17,7 @@ const InstructorSection = () => {
         </div>
         <div className="lg:w-[50%] flex gap-10 flex-col">
           <h1 className="lg:w-[50%] text-4xl font-semibold ">
-            Become an
+            Become an{" "}
             <span
               className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB]
             text-transparent bg-clip-text font-bold"
