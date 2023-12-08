@@ -4,6 +4,7 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import frameImg from "../../../assets/Images/frame.png";
 
+// For Singup and Login
 function Template({ title, description, description2, image, formType }) {
   const { loading } = useSelector((state) => state.auth);
   return (
