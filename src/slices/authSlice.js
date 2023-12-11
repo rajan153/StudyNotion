@@ -12,15 +12,15 @@ const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
   reducers: {
-    setSignupData(state, value) {
-      console.log("Auth Slice k andr se",value.payload);
-      state.signupData = value.payload;
+    setSignupData(state, action) {
+      console.log("Auth Slice k andr se",action.payload);
+      state.signupData = action.payload;
     },
-    setLoading(state, value) {
-      state.loading = value.payload;
+    setLoading(state, action) {
+      state.loading = action.payload;
     },
-    setToken(state, value) {
-      state.token = value.payload;
+    setToken(state, action) {
+      state.token = action.payload;
     },
   },
 });
