@@ -91,8 +91,8 @@ router.post("/deleteSubSection", auth, isInstructor, deleteSubSection);
 // **************************************************************
 
 router.post("/createCategory", auth, isAdmin, createCategory);
-router.get("/getAllCategories", auth, isAdmin, getAllCategories);
-router.post("/categoryPageDetails", auth, isAdmin, categoryPageDetails);
+router.get("/getAllCategories", getAllCategories);
+router.post("/categoryPageDetails", categoryPageDetails);
 
 // **************************************************************
 //                Rating and Review
