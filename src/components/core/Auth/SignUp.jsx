@@ -6,38 +6,37 @@ import { useForm } from "react-hook-form";
 import { sendOtp } from "../../../Services/operations/authApi";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import toast from "react-hot-toast";
-import setSignupData from "../../../slices/authSlice";
 import Tab from "../../common/Tab";
 import Input from "./Input";
+import OpenRoutes from "../../common/OpenRoutes";
+import { signUp } from "../../../Services/operations/authApi";
 
 function SignUp() {
+  <OpenRoutes />;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { register, handleSubmit } = useForm();
   // Student or Instructor
   const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
 
   const signupSubmit = (data) => {
     // Used after OTP Verification
-    console.log(data);
-    if(data.password !== data.confirmPassword) {
-      toast.error("Passwords not match")
-      return
+    if (data.password !== data.confirmPassword) {
+      toast.error("Passwords not match");
+      return;
     }
-    dispatch(
-      setSignupData(
-        data.firstName,
-        data.lastName,
-        data.firstName,
-        data.email,
-        data.password,
-        data.confirmPassword
-      )
-    );
+    const signUpData = {
+      ...data,
+      accountType,
+    };
+
+    console.log(signUpData);
+    dispatch(signUp(signUpData));
     // Sending OTP to User
-    dispatch(sendOtp(data.email, navigate));
+    dispatch(sendOtp(signUpData.email, navigate));
     // toast.success("Otp Send")
   };
 
