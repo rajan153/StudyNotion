@@ -17,20 +17,23 @@ function Navbar() {
 
   // API Call
   const [subLinks, setSubLinks] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const fetchSubLinks = async () => {
     try {
-      const result = await apiConnector("get", categories.CATEGORIES_API);
-      console.log(result);
-      setSubLinks(result.data.data);
+      const result = await apiConnector("GET", categories.CATEGORIES_API);
+      // const resultResponse = result.data.data.map((data) => data.name);
+      const resultResponse = result.data.allCategories;
+      console.log(resultResponse);
+      setSubLinks(resultResponse);
     } catch (error) {
       console.error("Could not fetch the category list", error);
     }
   };
-
+  
   useEffect(() => {
     setLoading(true);
     fetchSubLinks();
+    console.log(subLinks);
     setLoading(false);
   }, []);
 
@@ -73,20 +76,18 @@ function Navbar() {
                         ) : subLinks && subLinks.length ? (
                           <>
                             {subLinks
-                              ?.filter(
-                                (subLink) => subLink?.courses?.length > 0
-                              )
+                              ?.filter((subLink) => subLink?.length > 0)
                               ?.map((subLink, i) => (
-                                <Link
-                                  to={`/catalog/${subLink.name
-                                    .split(" ")
-                                    .join("-")
-                                    .toLowerCase()}`}
-                                  className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                  key={i}
-                                >
-                                  {subLink.name}{" "}
-                                </Link>
+                                  <Link
+                                    to={`/catalog/${subLink.name
+                                      .split(" ")
+                                      .join("-")
+                                      .toLowerCase()}`}
+                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                    key={i}
+                                  >
+                                    {subLink.name}{" "}
+                                  </Link>
                               ))}
                           </>
                         ) : (
