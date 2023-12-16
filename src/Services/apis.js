@@ -1,12 +1,12 @@
-const BASE_URL = import.meta.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // AUTH ENDPOINT
-export const Endpoints = {
+export const endPoints = {
   SENDOTP_API: BASE_URL + "/auth/sendotp",
   SIGNUP_API: BASE_URL + "/auth/signup",
   LOGIN_API: BASE_URL + "/auth/login",
-  RESETPASSTOKEN_API: BASE_URL + "/auth/reset-password-token",
-  RESETPASSWORD_API: BASE_URL + "/auth/reset-password",
+  RESETPASSTOKEN_API: BASE_URL + "/auth/resetPasswordToken",
+  RESETPASSWORD_API: BASE_URL + "/auth/resetPassword",
 };
 
 // PROFILE ENDPOINTS
@@ -44,7 +44,7 @@ export const ratingEndpoint = {
 
 // Categories API
 export const categories = {
-  CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+  CATEGORIES_API: BASE_URL + "/course/getAllCategories",
 };
 
 // CATALOG PAGE DATA
@@ -54,7 +54,7 @@ export const catalogData = {
 
 // CONTACT-US API
 export const contactusEndpoints = {
-  CONTACT_US_API: BASE_URL + "/react/contact",
+  CONTACT_US_API: BASE_URL + "/contact/contactUs",
 };
 
 // SETTINGS PAGE API
