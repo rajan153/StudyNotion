@@ -1,6 +1,6 @@
 import React from "react";
 import ContactDetails from "../components/core/contactPage/ContactDetails";
-import ContactFormSection from "../components/core/AboutPage/ContactFormSection";
+import ContactUs from "../components/core/contactPage/ContactUs";
 
 function Contact() {
   return (
@@ -12,7 +12,7 @@ function Contact() {
         </div>
         {/* Contact Form */}
         <div className="lg:w-[60%]">
-          <ContactFormSection />
+          <ContactUs />
         </div>
       </div>
       <div className="relative mx-auto my-20 flex w-11/12 max-w-maxContent flex-col items-center justify-between gap-8 bg-richblack-900 text-white">

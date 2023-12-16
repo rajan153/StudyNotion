@@ -5,8 +5,10 @@ import { login } from "../../../Services/operations/authApi";
 import Input from "./Input";
 import { useForm } from "react-hook-form";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import OpenRoutes from "../../common/OpenRoutes";
 
 function Login() {
+  <OpenRoutes />
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();
