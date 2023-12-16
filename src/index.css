@@ -243,3 +243,15 @@ html,body {
   .section_heading {
     @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
   }
+
+  /* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
