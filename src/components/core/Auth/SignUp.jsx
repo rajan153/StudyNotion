@@ -10,6 +10,7 @@ import Tab from "../../common/Tab";
 import Input from "./Input";
 import OpenRoutes from "../../common/OpenRoutes";
 import { signUp } from "../../../Services/operations/authApi";
+import { setSignupData } from "../../../slices/authSlice";
 
 function SignUp() {
   <OpenRoutes />;
@@ -34,7 +35,7 @@ function SignUp() {
     };
 
     console.log(signUpData);
-    dispatch(signUp(signUpData));
+    dispatch(setSignupData(signUpData));
     // Sending OTP to User
     dispatch(sendOtp(signUpData.email, navigate));
     // toast.success("Otp Send")
