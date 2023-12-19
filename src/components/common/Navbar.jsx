@@ -18,6 +18,7 @@ function Navbar() {
   // API Call
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
+  
   const fetchSubLinks = async () => {
     try {
       const result = await apiConnector("GET", categories.CATEGORIES_API);
@@ -76,7 +77,7 @@ function Navbar() {
                         ) : subLinks && subLinks.length ? (
                           <>
                             {subLinks
-                              ?.filter((subLink) => subLink?.length > 0)
+                              ?.filter((subLink) => subLink?.courses?.length > 0)
                               ?.map((subLink, i) => (
                                   <Link
                                     to={`/catalog/${subLink.name
