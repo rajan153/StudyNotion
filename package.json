@@ -29,6 +29,7 @@
     "react-super-responsive-table": "^5.2.2",
     "react-type-animation": "^3.2.0",
     "redux": "^5.0.0",
+    "swiper": "^11.0.5",
     "video-react": "^0.16.0"
   },
   "devDependencies": {
