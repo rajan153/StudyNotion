@@ -55,16 +55,14 @@ exports.getAllCategories = async (req, res) => {
 exports.categoryPageDetails = async (req, res) => {
   try {
     const { categoryId } = req.body;
-
     // Get courses for the specified category
     const selectedCategory = await Category.findById(categoryId)
       .populate({
         path: "courses",
         match: { status: "Published" },
-        populate: "ratingAndReviews",
+        populate: {path: "ratingAndReviews"},
       })
       .exec();
-    console.log(selectedCategory);
     // Handle the case when the category is not found
     if (!selectedCategory) {
       console.log("Category not found.");
@@ -113,10 +111,12 @@ exports.categoryPageDetails = async (req, res) => {
       .slice(0, 10);
 
     res.status(200).json({
-      success:true,
-      selectedCourses: selectedCourses,
-      differentCourses: differentCourses,
-      mostSellingCourses: mostSellingCourses,
+      success: true,
+      data: {
+        selectedCategory,
+        differentCourses,
+        mostSellingCourses,
+      },
     });
   } catch (error) {
     return res.status(500).json({

@@ -11,9 +11,9 @@ export const endPoints = {
 
 // PROFILE ENDPOINTS
 export const profileEndpoints = {
-  GET_USER_DETAILS_API: BASE_URL + "/payment/capturePayment",
-  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/payment/verifyPayment",
-  GET_INSTRUCTOR_DATA_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
+  GET_USER_DETAILS_API: BASE_URL + "/profile/getEnrolledCourse",
+  GET_USER_ENROLLED_COURSES_API: BASE_URL + "/profile/getEnrolledCourse",
+  GET_INSTRUCTOR_DATA_API: BASE_URL + "/profile/instructorDashboard",
 };
 
 // COURSE ENDPOINT
@@ -21,14 +21,14 @@ export const courseEndpoints = {
   GET_ALL_COURSE_API: BASE_URL + "/course/getAllCourses",
   COURSE_DETAILS_API: BASE_URL + "/course/getCourseDetails",
   EDIT_COURSE_API: BASE_URL + "/course/editCourse",
-  COURSE_CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+  COURSE_CATEGORIES_API: BASE_URL + "/course/getAllCategories",
   CREATE_COURSE_API: BASE_URL + "/course/createCourse",
-  CREATE_SECTION_API: BASE_URL + "/course/addSection",
-  CREATE_SUBSECTION_API: BASE_URL + "/course/addSubSection",
+  CREATE_SECTION_API: BASE_URL + "/course/createSection",
+  CREATE_SUBSECTION_API: BASE_URL + "/course/createSubSection",
   CREATE_UPDATESECTION_API: BASE_URL + "/course/updateSection",
   CREATE_UPDATESUBSECTION_API: BASE_URL + "/course/updateSubSection",
   GET_ALL_INSTRUCTOR_COURSES_API: BASE_URL + "/course/getInstructorCourses",
-  DELETE_COURSE_API: BASE_URL + "/course/deleteCourse",
+  DELETE_COURSE_API: BASE_URL + "/course/deletedCourse",
   DELETE_SECTION_API: BASE_URL + "/course/deleteSection",
   DELETE_SUBSECTION_API: BASE_URL + "/course/deleteSubSection",
   GET_FULL_COURSE_DETAILS_AUTHENICATED:
@@ -49,7 +49,7 @@ export const categories = {
 
 // CATALOG PAGE DATA
 export const catalogData = {
-  CATALOGPAGEDATA_API: BASE_URL + "/course/getCategoryPageDetails",
+  CATALOGPAGEDATA_API: BASE_URL + "/course/categoryPageDetails",
 };
 
 // CONTACT-US API
@@ -64,3 +64,10 @@ export const settingsEndpoints = {
   CHANGE_PASSWORD_API: BASE_URL + "/auth/changePassword",
   DELETE_PROFILE_API: BASE_URL + "/profile/deleteProfile",
 };
+
+// Student Payment
+export const studentEndpoints = {
+  COURSE_PAYMENT_API: BASE_URL + "/payment/capturePayment",
+  COURSE_VERIFY_API: BASE_URL + "/payment/verifySignature",
+  SEND_PAYMENT_SUCCESS_EMAIL_API: BASE_URL + "/payment/sendPaymentSuccessEmail",
+}
