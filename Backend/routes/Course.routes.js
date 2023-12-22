@@ -37,6 +37,11 @@ const {
   getAllRating,
 } = require("../controllers/RatingAndReviewing.controller");
 
+// Course Progress
+const {
+  updateCourseProgress,
+} = require("../controllers/CourseProgress.controller");
+
 // Middleware
 const {
   auth,
@@ -66,6 +71,8 @@ router.post("/getCourseDetails", getCourseDetails);
 router.post("/deletedCourse", auth, isInstructor, deletedCourse);
 // Get full deitals of Course
 router.post("/getFullCourseDetails", auth, getFullCourseDetails);
+// Course ProgressBar
+router.post("/updateCourseProgress", auth, isStudent, updateCourseProgress)
 
 // ******************************************************
 //                         Sections
