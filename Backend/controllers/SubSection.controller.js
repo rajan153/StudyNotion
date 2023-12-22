@@ -25,7 +25,7 @@ exports.createSubSection = async (req, res) => {
       title: title,
       timeDuration: `${uploadDetails.duration}`,
       description: description,
-      videoUrl: uploadDetails.secure_url,
+      videoUrl: uploadDetails.url,
     });
     // Update section with this subsection
     const updateSection = await Section.findByIdAndUpdate(

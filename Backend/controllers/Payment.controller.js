@@ -7,6 +7,7 @@ require("dotenv").config();
 const { paymentSuccessEmail } = require("../mails/paymentSuccessfulTemplate");
 const CourseProgress = require("../models/CourseProgress.model");
 const crypto = require("crypto");
+const { courseEnrollmentEmail } = require("../mails/courseEnrollmentTemplate");
 
 // Capture the payment and initiate the razorpay order
 exports.capturePayment = async (req, res) => {
@@ -89,7 +90,7 @@ exports.capturePayment = async (req, res) => {
 
 // Verify signature
 exports.verifySignature = async (req, res) => {
-  console.log("Body ",req.body);
+  console.log("Body ", req.body);
   const razorpay_order_id = req.body?.razorpay_order_id;
   const razorpay_payment_id = req.body?.razorpay_payment_id;
   const razorpay_signature = req.body?.razorpay_signature;
@@ -115,7 +116,7 @@ exports.verifySignature = async (req, res) => {
 
   console.log("EX", expectedSignature);
   console.log("RS", razorpay_signature);
-  
+
   if (expectedSignature === razorpay_signature) {
     await enrollStudents(courses, userId, res);
     return res.status(200).json({ success: true, message: "Payment Verified" });
