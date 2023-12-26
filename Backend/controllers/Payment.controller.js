@@ -183,7 +183,7 @@ const enrollStudents = async (courses, userId, res) => {
       console.log("Updated course: ", enrolledCourse);
 
       const courseProgress = await CourseProgress.create({
-        courseID: courseId,
+        courseId: courseId,
         userId: userId,
         completedVideos: [],
       });
