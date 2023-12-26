@@ -2,6 +2,8 @@ const Profile = require("../models/Profile.model");
 const User = require("../models/User.model");
 const Course = require("../models/Course.model");
 const { uploadImageToCloudinary } = require("../utils/imageUploader.utils");
+const CourseProgress = require("../models/CourseProgress.model");
+const {convertSecondsToDuration} = require("../utils/secToDuration.utils");
 
 // Update Profile
 exports.updateProfile = async (req, res) => {
@@ -147,7 +149,7 @@ exports.updateDisplayPicture = async (req, res) => {
 exports.getEnrolledCourse = async (req, res) => {
   try {
     const userId = req.user.id;
-    const userDetails = await User.findOne({
+    let userDetails = await User.findOne({
       _id: userId,
     })
       .populate({
@@ -160,6 +162,43 @@ exports.getEnrolledCourse = async (req, res) => {
         },
       })
       .exec();
+
+    userDetails = userDetails.toObject();
+    let subSecLength = 0;
+    for (let i = 0; i < userDetails.courses.length; i++) {
+      subSecLength = 0;
+      let totalDurationinSeconds = 0;
+      for (j = 0; j < userDetails.courses[i].courseContent.length; j++) {
+        totalDurationinSeconds += userDetails.courses[i].courseContent[
+          j
+        ].subSection.reduce(
+          (acc, curr) => acc + parseInt(curr.timeDuration),
+          0
+        );
+
+        userDetails.courses[i].totalDuration = convertSecondsToDuration(
+          totalDurationinSeconds
+        );
+        subSecLength +=
+          userDetails.courses[i].courseContent[j].subSection.length;
+      }
+
+      let courseProgressCount = await CourseProgress.findOne({
+        courseId: userDetails.courses[i],
+        userId: userId,
+      });
+
+      courseProgressCount = courseProgressCount?.completedVideos.length;
+
+      if (subSecLength === 0) {
+        userDetails.courses[i].progressPercentage = 100;
+      } else {
+        const mul = Math.pow(10, 2);
+        userDetails.courses[i].progressPercentage =
+          Math.round((courseProgressCount / subSecLength) * 100 * mul) / mul;
+      }
+    }
+
     if (!userDetails) {
       return res.status(400).json({
         success: false,
