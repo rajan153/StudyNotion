@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import ProgressBar from "@ramonak/react-progress-bar"
-import { BiDotsVerticalRounded } from "react-icons/bi"
-import {getUserEnrolledCourses} from "../../../Services/operations/profileApi"
+import ProgressBar from "@ramonak/react-progress-bar";
+import { BiDotsVerticalRounded } from "react-icons/bi";
+import { getUserEnrolledCourses } from "../../../Services/operations/profileApi";
 
 function EnrolledCourses() {
   const { token } = useSelector((state) => state.auth);
@@ -13,7 +13,6 @@ function EnrolledCourses() {
   const getEnrolledCourses = async () => {
     try {
       const res = await getUserEnrolledCourses(token);
-
       setEnrolledCourses(res);
     } catch (error) {
       console.log("Could not fetch enrolled courses.");

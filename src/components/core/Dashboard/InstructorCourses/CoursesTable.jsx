@@ -1,36 +1,38 @@
 import React, { useState } from "react";
-import { Table, Tbody, Thead, Tr } from "react-super-responsive-table";
+import { Table, Tbody, Td, Th, Thead, Tr } from "react-super-responsive-table";
 import ConfirmationModal from "../../../common/ConfirmationModal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { COURSE_STATUS } from "../../../../utils/constants"
-import { formatDate } from "../../../../Services/formatDate"
-import {deleteCourse, fetchInstructorCourses} from "../../../../Services/operations/courseDetailsAPI"
-import { FaCheck } from "react-icons/fa"
-import { FiEdit2 } from "react-icons/fi"
-import { HiClock } from "react-icons/hi"
-import { RiDeleteBin6Line } from "react-icons/ri"
-import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css"
-import {setCourse, setEditCourse} from "../../../../slices/courseSlice"
+import { COURSE_STATUS } from "../../../../utils/constants";
+import { formatDate } from "../../../../Services/formatDate";
+import {
+  deleteCourse,
+  fetchInstructorCourses,
+} from "../../../../Services/operations/courseDetailsApi";
+import { FaCheck } from "react-icons/fa";
+import { FiEdit2 } from "react-icons/fi";
+import { HiClock } from "react-icons/hi";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
+
 
 function CoursesTable({ courses, setCourses }) {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { token } = useSelector((state) => state.auth)
-  const [loading, setLoading] = useState(false)
-  const [confirmationModal, setConfirmationModal] = useState(null)
-  const TRUNCATE_LENGTH = 30
+  const navigate = useNavigate();
+  const { token } = useSelector((state) => state.auth);
+  const [loading, setLoading] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(null);
+  const TRUNCATE_LENGTH = 30;
 
   const handleCourseDelete = async (courseId) => {
-    setLoading(true)
-    await deleteCourse({ courseId: courseId }, token)
-    const result = await fetchInstructorCourses(token)
+    setLoading(true);
+    await deleteCourse({ courseId: courseId }, token);
+    const result = await fetchInstructorCourses(token);
     if (result) {
-      setCourses(result)
+      setCourses(result);
     }
-    setConfirmationModal(null)
-    setLoading(false)
-  }
+    setConfirmationModal(null);
+    setLoading(false);
+  };
 
   return (
     <>
