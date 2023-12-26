@@ -17,10 +17,11 @@ function Instructor() {
       setLoading(true);
       const instructorApiData = await getInstructorData(token);
       const result = await fetchInstructorCourses(token);
-      console.log(instructorApiData);
+      // console.log(instructorApiData);
       if (instructorApiData.length) setInstructorData(instructorApiData);
       if (result) {
         setCourses(result);
+        // console.log("Ruko jrah", result);
       }
       setLoading(false);
     })();
@@ -108,7 +109,9 @@ function Instructor() {
                     </p>
                     <div className="mt-1 flex items-center space-x-2">
                       <p className="text-xs font-medium text-richblack-300">
-                        {course.studentsEnroled.length} students
+                        {/* Here is Error */}
+                        {course.studentEnrolled.length}
+                        students
                       </p>
                       <p className="text-xs font-medium text-richblack-300">
                         |
