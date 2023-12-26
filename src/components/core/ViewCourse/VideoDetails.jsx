@@ -6,8 +6,6 @@ import "../../../../node_modules/video-react/dist/video-react.css";
 import { markLectureAsComplete } from "../../../Services/operations/courseDetailsApi";
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
 import IconBtn from "../../common/IconBtn";
-// import { AdvancedVideo, AdvancedImage } from "@cloudinary/react";
-// import { Cloudinary } from "@cloudinary/url-gen";
 
 function VideoDetails() {
   const { courseId, sectionId, subSectionId } = useParams();
@@ -162,6 +160,7 @@ function VideoDetails() {
       { courseId: courseId, subsectionId: subSectionId },
       token
     );
+    
     if (res) {
       dispatch(updateCompletedLectures(subSectionId));
     }
