@@ -16,7 +16,6 @@ exports.updateCourseProgress = async (req, res) => {
     }
     let courseProgress = await CourseProgress.findOne({ courseId, userId });
 
-    console.log("Data this", userId);
     if (!courseProgress) {
       return res.status(400).json({
         success: false,
