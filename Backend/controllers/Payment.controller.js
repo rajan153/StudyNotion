@@ -15,7 +15,7 @@ exports.capturePayment = async (req, res) => {
     // Get id
     const { course_Id } = req.body;
     const userId = req.user.id;
-    console.log("CourseId", course_Id);
+    // console.log("CourseId", course_Id);
     // Valid courseId
     if (!course_Id) {
       return res.status(400).json({
@@ -27,7 +27,7 @@ exports.capturePayment = async (req, res) => {
     // Valid courseDetails
     try {
       let course;
-      console.log("done");
+      // console.log("done");
       for (const course_id of course_Id) {
         // Find the course by its ID
         course = await Course.findById(course_id);
@@ -50,7 +50,7 @@ exports.capturePayment = async (req, res) => {
         totalAmount += course.price;
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return res.status(500).json({
         success: false,
         message: "Course is not valid",
@@ -67,20 +67,20 @@ exports.capturePayment = async (req, res) => {
       // Initiate the payment using razorpay
       const paymentResponse = await instance.orders.create(options);
       // return response
-      console.log("Payment Response", paymentResponse);
+      // console.log("Payment Response", paymentResponse);
       return res.status(200).json({
         success: true,
         data: paymentResponse,
       });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return res.status(400).json({
         success: false,
         message: "Your order could'nt initiate",
       });
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while capturing payment.",
@@ -114,9 +114,6 @@ exports.verifySignature = async (req, res) => {
     .update(body)
     .digest("hex");
 
-  console.log("EX", expectedSignature);
-  console.log("RS", razorpay_signature);
-
   if (expectedSignature === razorpay_signature) {
     await enrollStudents(courses, userId, res);
     return res.status(200).json({ success: true, message: "Payment Verified" });
@@ -149,7 +146,7 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
       )
     );
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while sending payment email",
@@ -200,7 +197,7 @@ const enrollStudents = async (courses, userId, res) => {
         { new: true }
       );
 
-      console.log("Enrolled student: ", enrolledStudent);
+      // console.log("Enrolled student: ", enrolledStudent);
       // Send an email notification to the enrolled student
       const emailResponse = await mailSender(
         enrolledStudent.email,
@@ -211,10 +208,10 @@ const enrollStudents = async (courses, userId, res) => {
         )
       );
 
-      console.log("Email sent successfully: ", emailResponse.response);
+      // console.log("Email sent successfully: ", emailResponse.response);
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({
       success: false,
       message: "Something went wrong while enrolling the student in course",

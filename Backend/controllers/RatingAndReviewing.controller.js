@@ -51,7 +51,7 @@ exports.createRating = async (req, res) => {
       message: "Rating is added",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while creating rating.",
@@ -87,7 +87,7 @@ exports.getAverageRating = async (req, res) => {
       message: "No rating given by you till now.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching the Average rating.",
@@ -109,7 +109,7 @@ exports.getAllRating = async (req, res) => {
       data: allReviews,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching the all ratings.",

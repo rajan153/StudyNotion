@@ -41,7 +41,7 @@ exports.createSubSection = async (req, res) => {
       updateSection,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong in creating SubSection.",
@@ -88,7 +88,7 @@ exports.updateSubSection = async (req, res) => {
       message: "SubSection is update successfully.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       sucess: false,
       message: "Something went wrong while updating the sub-section.",
@@ -117,7 +117,7 @@ exports.deleteSubSection = async (req, res) => {
       message: "subSection deleted successfully.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while deleting the subSection.",

@@ -44,7 +44,7 @@ exports.resetPasswordToken = async (req, res) => {
       message: "Email sent successfully, Please check your email",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while reset password",
@@ -95,7 +95,7 @@ exports.resetPassword = async (req, res) => {
       message: "Password reset successfully",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       messgae: "Something went wrong while reset the password",

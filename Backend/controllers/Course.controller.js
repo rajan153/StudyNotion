@@ -30,8 +30,8 @@ exports.createCourse = async (req, res) => {
     const tag = JSON.parse(_tag);
     const instructions = JSON.parse(_instructions);
 
-    console.log("tag", tag);
-    console.log("instructions", instructions);
+    // console.log("tag", tag);
+    // console.log("instructions", instructions);
     // Validation
     if (
       !courseName ||
@@ -120,7 +120,7 @@ exports.createCourse = async (req, res) => {
       data: newCourse,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Failed to create Course",
@@ -152,7 +152,7 @@ exports.getAllCourses = async (req, res) => {
       data: allCourse,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Cannot fetch all courses data",
@@ -197,7 +197,7 @@ exports.getCourseDetails = async (req, res) => {
     });
     const totalDuration = convertSecondsToDuration(totalDurationInSeconds);
     // Return response
-    console.log(courseDetails.length);
+    // console.log(courseDetails.length);
     return res.status(200).json({
       success: true,
       message: "Course Details successfully fetched",
@@ -262,7 +262,7 @@ exports.editCourse = async (req, res) => {
       data: updatedCourse,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while edit the course",
@@ -316,7 +316,7 @@ exports.getFullCourseDetails = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while getting full course details.",
@@ -337,7 +337,7 @@ exports.getInstructorCourses = async (req, res) => {
       data: instructorCourses,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching instructor's course.",
@@ -379,7 +379,7 @@ exports.deletedCourse = async (req, res) => {
       message: "Course deleted successfully",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while deleting the course",
