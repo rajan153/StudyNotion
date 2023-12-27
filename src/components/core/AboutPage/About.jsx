@@ -7,6 +7,7 @@ import FoundingStory from "../../../assets/Images/FoundingStory.png";
 import StatsComponenet from "./StatsComponenet";
 import LearningGrid from "./LearningGrid";
 import ContactFormSection from "./ContactFormSection";
+import ReviewSlider from "../HomePage/ReviewSlider";
 
 function About() {
   return (
@@ -121,7 +122,7 @@ function About() {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
     </div>
   );

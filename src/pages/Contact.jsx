@@ -1,6 +1,7 @@
 import React from "react";
 import ContactDetails from "../components/core/contactPage/ContactDetails";
 import ContactUs from "../components/core/contactPage/ContactUs";
+import ReviewSlider from "../components/core/HomePage/ReviewSlider";
 
 function Contact() {
   return (
@@ -20,7 +21,7 @@ function Contact() {
         <h2 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h2>
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
     </div>
   );
