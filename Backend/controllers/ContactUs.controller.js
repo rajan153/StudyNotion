@@ -23,7 +23,7 @@ exports.contactUsController = async (req, res) => {
       message: "Data send successfully",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while sending contactUs form",

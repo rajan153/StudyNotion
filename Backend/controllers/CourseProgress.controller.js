@@ -37,7 +37,7 @@ exports.updateCourseProgress = async (req, res) => {
       message: "Course progress updated",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while updating the progress bar",

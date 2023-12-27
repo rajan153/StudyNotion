@@ -40,7 +40,7 @@ exports.createSection = async (req, res) => {
       updatedCourseDetails,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while creating section",
@@ -72,7 +72,7 @@ exports.updateSection = async (req, res) => {
       message: "Section updated.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while updating section",
@@ -95,7 +95,7 @@ exports.deleteSection = async (req, res) => {
       message: "Delete section successfully.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while deleting Section.",

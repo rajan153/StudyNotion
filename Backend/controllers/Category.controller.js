@@ -20,14 +20,12 @@ exports.createCategory = async (req, res) => {
       name: name,
       description: description,
     });
-    console.log(categoryDetails);
     // return response
     return res.status(200).json({
       success: true,
       message: "Category is added successfully",
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong in category.",
@@ -44,7 +42,6 @@ exports.getAllCategories = async (req, res) => {
       allCategories,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({
       success: false,
       message: "Something went wrong while fetching categories.",
@@ -65,14 +62,12 @@ exports.categoryPageDetails = async (req, res) => {
       .exec();
     // Handle the case when the category is not found
     if (!selectedCategory) {
-      console.log("Category not found.");
       return res
         .status(404)
         .json({ success: false, message: "Category not found" });
     }
     // Handle the case when there are no courses
     if (selectedCategory.courses.length === 0) {
-      console.log("No courses found for the selected category.");
       return res.status(404).json({
         success: false,
         message: "No courses found for the selected category.",

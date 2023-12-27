@@ -44,7 +44,7 @@ exports.updateProfile = async (req, res) => {
       updatedUserDetails,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while updating the profile",
@@ -77,7 +77,7 @@ exports.deleteProfile = async (req, res) => {
       message: "Account deleted successfully.",
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while deleting the account.",
@@ -108,7 +108,7 @@ exports.getAllDetails = async (req, res) => {
       data: userDetails,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching all details of user.",
@@ -137,7 +137,7 @@ exports.updateDisplayPicture = async (req, res) => {
       data: updatedProfile,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while updaitng display picture.",
@@ -211,7 +211,7 @@ exports.getEnrolledCourse = async (req, res) => {
       data: userDetails.courses,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return res.status(500).json({
       success: false,
       message: "Something went wrong while fetching",
@@ -240,7 +240,7 @@ exports.instructorDashboard = async (req, res) => {
     });
     res.status(200).json({ courses: courseData });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({
       success: false,
       message:
