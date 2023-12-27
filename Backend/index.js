@@ -21,7 +21,9 @@ database.connect();
 // middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "*", credentials: true }));
+app.use(
+  cors({ origin: "https://study-notion-sandy.vercel.app", credentials: true })
+);
 app.use(fileUpload({ useTempFiles: true, tempFileDir: "/tmp" }));
 
 // Cloudinary Connection
@@ -37,10 +39,10 @@ app.use("/api/v1/contact", contactRoutes);
 // Default routes
 app.get("/", (req, res) => {
   return res.status(200).json({
-    success:true,
-  })
+    success: true,
+  });
 });
 
 app.listen(PORT, () => {
-    console.log(`App is running on ${PORT}`);
-})
+  console.log(`App is running on ${PORT}`);
+});
