@@ -18,23 +18,22 @@ function Navbar() {
   // API Call
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   const fetchSubLinks = async () => {
     try {
       const result = await apiConnector("GET", categories.CATEGORIES_API);
       // const resultResponse = result.data.data.map((data) => data.name);
       const resultResponse = result.data.allCategories;
-      console.log(resultResponse);
+      // console.log(resultResponse);
       setSubLinks(resultResponse);
     } catch (error) {
       console.error("Could not fetch the category list", error);
     }
   };
-  
+
   useEffect(() => {
     setLoading(true);
     fetchSubLinks();
-    console.log(subLinks);
     setLoading(false);
   }, []);
 
@@ -55,7 +54,7 @@ function Navbar() {
           />
         </Link>
         {/* Nav Links */}
-        <nav>
+        <nav className="hidden md:block">
           <ul className="flex gap-x-6 text-richblack-25">
             {NavbarLinks.map((link, index) => (
               <li key={index}>
@@ -77,18 +76,20 @@ function Navbar() {
                         ) : subLinks && subLinks.length ? (
                           <>
                             {subLinks
-                              ?.filter((subLink) => subLink?.courses?.length > 0)
+                              ?.filter(
+                                (subLink) => subLink?.courses?.length > 0
+                              )
                               ?.map((subLink, i) => (
-                                  <Link
-                                    to={`/catalog/${subLink.name
-                                      .split(" ")
-                                      .join("-")
-                                      .toLowerCase()}`}
-                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
-                                    key={i}
-                                  >
-                                    {subLink.name}{" "}
-                                  </Link>
+                                <Link
+                                  to={`/catalog/${subLink.name
+                                    .split(" ")
+                                    .join("-")
+                                    .toLowerCase()}`}
+                                  className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-50"
+                                  key={i}
+                                >
+                                  {subLink.name}{" "}
+                                </Link>
                               ))}
                           </>
                         ) : (
@@ -118,20 +119,24 @@ function Navbar() {
         <div className="flex gap-x-4 items-center">
           {user && user?.accountType != "Instructor" && (
             <Link to="/dashboard/cart" className="relative">
-              <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
-              {totalItems > 0 && <span>{totalItems}</span>}
+              <AiOutlineShoppingCart className="hidden md:block text-2xl text-richblack-100" />
+              {totalItems > 0 && (
+                <span className="hidden md:grid absolute -bottom-2 -right-2 h-5 w-5 place-items-center overflow-hidden rounded-full bg-richblack-600 text-center text-xs font-bold text-yellow-100">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           )}
           {token === null && (
             <Link to="/login">
-              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+              <button className="hidden md:block border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md">
                 Log in
               </button>
             </Link>
           )}
           {token === null && (
             <Link to="/signup">
-              <button className="rounded-[8px] border border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100">
+              <button className="hidden md:block border w-full gap-x-2 items-center border-richblack-700 bg-richblack-800 px-[12px] py-[8px] text-richblack-100 rounded-md">
                 Sign Up
               </button>
             </Link>
