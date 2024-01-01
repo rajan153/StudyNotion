@@ -1,7 +1,7 @@
 # StudyNotion Online Education Platform (MERN App) [Website Link](https://study-notion-sandy.vercel.app/)
-
-![comment] <>(images/mainpage.png)
-
+<!---
+![Main Page] (images/mainpage.png)
+-->
 ## Project Description
 
 StudyNotion is a fully functional ed-tech platform that enables users to create, consume,
