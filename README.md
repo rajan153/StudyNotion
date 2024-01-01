@@ -1,6 +1,6 @@
 # StudyNotion Online Education Platform (MERN App) [Website Link](https://study-notion-sandy.vercel.app/)
 
-//![Main Page](images/mainpage.png)
+![comment](images/mainpage.png)
 
 ## Project Description
 
